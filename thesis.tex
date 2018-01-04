@@ -1,0 +1,97 @@
+\documentclass[
+    specialist,  % Тип документа
+    href,        % Использовать пакет hyperref для создания гиперссылок
+    subf,        % Использовать пакет subcaption для вложенной нумерации рисунков
+    colorlinks   % Цветные гиперссылки
+]{disser}
+
+\usepackage[
+    a4paper, includefoot,
+    left=2cm, right=2cm,
+    top=2cm, bottom=2cm,
+    headsep=1cm, footskip=1cm
+]{geometry}
+
+% Настройка локализации и переносов
+\usepackage[T1, T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+
+% Нумерация страниц снизу и по центру
+\pagestyle{footcenter}
+\chapterpagestyle{footcenter}
+
+% Нормальные гиперссылки
+\usepackage{hyperref}
+% Внутриабзацные списки
+\usepackage{paralist}
+
+% \usepackage{textcomp}
+
+% Графика
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{fig/}}
+
+% Библиография
+\usepackage{csquotes}
+\usepackage[
+    backend = biber,       % Движок
+    bibencoding = utf8,    % Кодировка файлов с библиографическими БД
+    style = gost-numeric,  % Стиль цитирования по ГОСТ
+    language = auto,       % Получение языка из babel/polyglossia; ссылки на страницы на языке оригинала
+    autolang = other,      % Многоязычная библиография
+    clearlang = true,      % Внутренний сброс поля language при совпадении с языком из babel/polyglossia
+    sortcites = true,      % Сортировка затекстовых ссылок при цитировании
+    minbibnames = 3,       % Число авторов, отображаемое при сокращении
+    maxbibnames = 3,       % Максимальное число авторов в препозиции
+]{biblatex}
+
+\addbibresource{./bib/scat.bib}
+\addbibresource{./bib/stuff.bib}
+
+% Счётчик библиографических источников
+\usepackage{totcount}
+\newtotcounter{citnum}
+\AtEveryBibitem{\stepcounter{citnum}}
+
+\fussy
+
+\begin{document}
+
+\institution{
+    Санкт-Петербургский государственный университет \\
+    Филологический факультет \\
+    Кафедра математической лингвистики
+}
+
+\apname{к.\,ф.\,н., доц. И.\,С.~Николаев}
+
+\title{Выпускная квалификационная работа}
+\author{Сипунин Константин Владимирович}
+\topic{Автоматическая лемматизация текстов в корпусе СКАТ на основе морфологической разметки}
+
+\sa{Е.\,Л.~Алексеева}
+\sastatus{к.\,ф.\,н., доц.}
+
+% \rev{И.\,В.~Азарова}
+% \revstatus{к.\,ф.\,н., доц.}
+
+\city{Санкт-Петербург}
+\date{\number\year}
+
+% Титульный лист
+\maketitle
+
+% Содержание
+\tableofcontents
+
+% Текст работы
+\input{intro}
+\input{1}
+
+% Библиография
+\nocite{*}
+\printbibliography
+
+\end{document}
