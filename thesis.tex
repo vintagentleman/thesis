@@ -16,28 +16,35 @@
 \usepackage[T1, T2A]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english, russian]{babel}
+\usepackage[autostyle]{csquotes}
+
+% Глубина оглавления
+\setcounter{tocdepth}{3}
 
 % Нумерация страниц снизу и по центру
 \pagestyle{footcenter}
 \chapterpagestyle{footcenter}
 
-% Нормальные гиперссылки
-\usepackage{hyperref}
-% Внутриабзацные списки
-\usepackage{paralist}
-% Специальные символы
+% Спецсимволы
 \usepackage{textcomp}
-% Рабочие сноски
+
+% Сноски
 \usepackage[bottom]{footmisc}
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+% Списки
+\usepackage{paralist}
+\setdefaultleftmargin{5ex}{}{}{}{}{}
+
+% Таблицы
+\usepackage{booktabs}
+\usepackage{tabularx}
 
 % Графика
 \usepackage{graphicx}
 \usepackage{subcaption}
 \graphicspath{{fig/}}
-
-% Таблицы
-\usepackage{booktabs}
-\usepackage{tabularx}
 
 % Библиография
 \usepackage{csquotes}
@@ -53,6 +60,7 @@
     maxbibnames = 5,       % Максимальное число авторов в препозиции
 ]{biblatex}
 
+\addbibresource{./bib/ncr.bib}
 \addbibresource{./bib/scat.bib}
 \addbibresource{./bib/stuff.bib}
 
@@ -98,6 +106,6 @@
 
 % Библиография
 \nocite{*}
-\printbibliography
+\printbibliography[heading=bibintoc]
 
 \end{document}
