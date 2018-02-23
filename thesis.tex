@@ -7,9 +7,9 @@
 
 \usepackage[
     a4paper, includefoot,
-    left=2cm, right=2cm,
-    top=2cm, bottom=2cm,
-    headsep=1cm, footskip=1cm
+    left = 2cm, right = 2cm,
+    top = 2cm, bottom = 2cm,
+    headsep = 1cm, footskip = 1cm
 ]{geometry}
 
 % Настройка локализации и переносов
@@ -57,12 +57,25 @@
     clearlang = true,      % Внутренний сброс поля language при совпадении с языком из babel/polyglossia
     sortcites = true,      % Сортировка затекстовых ссылок при цитировании
     % minbibnames = 1,     % Число авторов, отображаемое при сокращении
-    maxbibnames = 5,       % Максимальное число авторов в препозиции
+    maxbibnames = 5        % Максимальное число авторов в препозиции
 ]{biblatex}
 
-\addbibresource{./bib/ncr.bib}
 \addbibresource{./bib/scat.bib}
 \addbibresource{./bib/stuff.bib}
+
+% Сортировка библиографии
+\DeclareSourcemap{
+    \maps[datatype = bibtex]{
+        \map{
+            \step[fieldsource = langid, match = russian, final]
+            \step[fieldset = presort, fieldvalue = {a}]
+        }
+        \map{
+            \step[fieldsource = langid, notmatch = russian, final]
+            \step[fieldset = presort, fieldvalue = {z}]
+        }
+    }
+}
 
 % Счётчик библиографических источников
 \usepackage{totcount}
@@ -73,36 +86,19 @@
 
 \begin{document}
 
-\institution{%
-    Санкт-Петербургский государственный университет \\
-    Филологический факультет \\
-    Кафедра математической лингвистики
-}
-
-\apname{к.",ф.",н., доц.\ И.",С.~Николаев}
-
-\title{Выпускная квалификационная работа}
-\author{Сипунин Константин Владимирович}
-\topic{Автоматическая лемматизация текстов в корпусе СКАТ на основе морфологической разметки}
-
-\sa{Е.",Л.~Алексеева}
-\sastatus{к.",ф.",н., доц.}
-
-% \rev{И.",В.~Азарова}
-% \revstatus{к.",ф.",н., доц.}
-
-\city{Санкт-Петербург}
-\date{\number\year}
-
 % Титульный лист
+\input{title}
 \maketitle
 
-% Содержание
+% Оглавление
 \tableofcontents
 
 % Текст работы
 \input{intro}
 \input{1}
+\input{2}
+\input{3}
+\input{concl}
 
 % Библиография
 \nocite{*}
