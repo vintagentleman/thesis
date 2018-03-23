@@ -13,12 +13,16 @@
 ]{geometry}
 
 % Настройка локализации и переносов
-\usepackage[T1, T2A]{fontenc}
+\usepackage[X2, T1, T2A]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english, russian]{babel}
 \usepackage[autostyle]{csquotes}
 
+% Команда для доступа к расширенной кириллице
+\newcommand{\old}{\fontencoding{X2}\selectfont}
+
 % Глубина оглавления
+\setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
 % Нумерация страниц снизу и по центру
@@ -40,6 +44,8 @@
 % Таблицы
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{makecell}
+\renewcommand\theadfont{\bfseries}
 
 % Графика
 \usepackage{graphicx}
@@ -52,7 +58,7 @@
     backend = biber,       % Движок
     bibencoding = utf8,    % Кодировка файлов с библиографическими БД
     style = gost-numeric,  % Стиль цитирования по ГОСТ
-    % language = auto,     % Получение языка из babel/polyglossia; ссылки на страницы на языке оригинала
+    language = auto,       % Получение языка из babel/polyglossia; ссылки на страницы на языке оригинала
     autolang = other,      % Многоязычная библиография
     clearlang = true,      % Внутренний сброс поля language при совпадении с языком из babel/polyglossia
     sortcites = true,      % Сортировка затекстовых ссылок при цитировании
