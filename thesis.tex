@@ -15,7 +15,7 @@
 % Настройка локализации и переносов
 \usepackage[X2, T1, T2A]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[english, russian]{babel}
+\usepackage[french, english, russian]{babel}
 \usepackage[autostyle]{csquotes}
 
 % Команда для доступа к расширенной кириллице
@@ -37,7 +37,7 @@
 \counterwithout{footnote}{chapter}
 
 % Списки
-\usepackage{paralist}
+\usepackage[defblank]{paralist}
 \setdefaultleftmargin{5ex}{}{}{}{}{}
 
 % Таблицы
@@ -64,7 +64,8 @@
     autolang = other,      % Многоязычная библиография
     clearlang = true,      % Внутренний сброс поля language при совпадении с языком из babel/polyglossia
     sortcites = true,      % Сортировка затекстовых ссылок при цитировании
-    % minbibnames = 1,     % Число авторов, отображаемое при сокращении
+    movenames = false,     % Не менять местами заголовок и список авторов, если последних больше четырёх
+    minbibnames = 3,       % Число авторов, отображаемое при сокращении
     maxbibnames = 5        % Максимальное число авторов в препозиции
 ]{biblatex}
 
