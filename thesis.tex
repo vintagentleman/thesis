@@ -42,8 +42,9 @@
 
 % Таблицы
 \usepackage{booktabs}
-\usepackage{tabularx}
+\usepackage{ltablex}
 \usepackage{makecell}
+\keepXColumns
 \renewcommand\theadfont{\bfseries}
 
 % Графика
@@ -110,5 +111,9 @@
 % Библиография
 \nocite{*}
 \printbibliography[heading = bibintoc]
+
+% Приложения
+\appendix
+\input{app-a}
 
 \end{document}
