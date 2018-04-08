@@ -1,41 +1,35 @@
-\documentclass[
-    specialist,              % Тип документа
-    href,                    % Гиперссылки
-    subf,                    % Вложенная нумерация рисунков
-    colorlinks,              % Цветные гиперссылки
-    substylefile = spbu.rtx  % Стиль титульного листа
-]{disser}
+\documentclass[specialist, subf, substylefile = spbu.rtx]{disser}
+\usepackage[a4paper, includefoot, left = 2cm, right = 2cm, top = 2cm, bottom = 2cm, headsep = 1cm, footskip = 1cm]{geometry}
 
-\usepackage[
-    a4paper, includefoot,
-    left = 2cm, right = 2cm,
-    top = 2cm, bottom = 2cm,
-    headsep = 1cm, footskip = 1cm
-]{geometry}
-
-% Настройка локализации и переносов
-\usepackage[X2, T1, T2A]{fontenc}
-\usepackage[utf8]{inputenc}
+% Локализация
+\usepackage{fontspec}
+\usepackage{xecyr}
 \usepackage[french, english, russian]{babel}
+
+% Шрифты
+\defaultfontfeatures{Ligatures = TeX, Mapping = tex-text, HyphenChar = "002D}
+\setmainfont[Ligatures = {TeX,Historic}]{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Consolas}
+\newfontfamily{\agio}{AgioUnicode}
+
+% Оформление
+\usepackage[babel]{microtype}
 \usepackage[autostyle]{csquotes}
+\usepackage[xetex, colorlinks, allcolors = blue]{hyperref}
 
-% Команда для доступа к расширенной кириллице
-\newcommand{\old}{\fontencoding{X2}\selectfont}
-
-% Глубина оглавления
+% Глубина нумерации разделов и оглавления
+% \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
 
 % Нумерация страниц снизу и по центру
 \pagestyle{footcenter}
 \chapterpagestyle{footcenter}
 
-% Спецсимволы
-\usepackage{textcomp}
-
 % Сноски
 \usepackage[bottom]{footmisc}
-\usepackage{chngcntr}
-\counterwithout{footnote}{chapter}
+% \usepackage{chngcntr}
+% \counterwithout{footnote}{chapter}
 
 % Списки
 \usepackage{paralist}
@@ -44,11 +38,11 @@
 % Таблицы
 \usepackage{booktabs}
 \usepackage{ltablex}
-\usepackage{makecell}
+% \usepackage{makecell}
 \keepXColumns
 \renewcommand{\aboverulesep}{0.1pt}
 \renewcommand{\belowrulesep}{0.1pt}
-\renewcommand\theadfont{\bfseries}
+\newcommand*{\thead}[1]{\multicolumn{1}{c}{\bfseries #1}}
 
 % Графика
 \usepackage{graphicx}
