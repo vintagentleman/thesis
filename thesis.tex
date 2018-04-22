@@ -8,7 +8,7 @@
 
 % Шрифты
 \defaultfontfeatures{Ligatures = TeX, Mapping = tex-text, HyphenChar = "002D}
-\setmainfont[Ligatures = {TeX,Historic}]{Times New Roman}
+\setmainfont[Ligatures = {TeX, Historic}]{Times New Roman}
 \setsansfont{Arial}
 \setmonofont{Consolas}
 \newfontfamily{\agio}{AgioUnicode}
@@ -16,7 +16,14 @@
 % Оформление
 \usepackage[babel]{microtype}
 \usepackage[autostyle]{csquotes}
-\usepackage[xetex, colorlinks, allcolors = blue]{hyperref}
+\usepackage[
+    xetex,
+    bookmarksnumbered,
+    bookmarksopen,
+    colorlinks,
+    allcolors = blue,
+    hyperfootnotes = false
+]{hyperref}
 
 % Глубина нумерации разделов и оглавления
 % \setcounter{secnumdepth}{3}
@@ -27,9 +34,7 @@
 \chapterpagestyle{footcenter}
 
 % Сноски
-\usepackage[bottom]{footmisc}
-% \usepackage{chngcntr}
-% \counterwithout{footnote}{chapter}
+\usepackage[bottom, perpage]{footmisc}
 
 % Списки
 \usepackage{paralist}
@@ -88,6 +93,9 @@
 \usepackage{totcount}
 \newtotcounter{citnum}
 \AtEveryBibitem{\stepcounter{citnum}}
+
+% Короткое тире во всех интервалах страниц
+\DefineBibliographyExtras{russian}{\protected\def\bibrangedash{\textendash}}
 
 \sloppy
 
