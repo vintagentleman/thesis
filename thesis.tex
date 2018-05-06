@@ -4,7 +4,7 @@
 % Локализация
 \usepackage{fontspec}
 \usepackage{xecyr}
-\usepackage[french, english, russian]{babel}
+\usepackage[polish, french, english, russian]{babel}
 
 % Шрифты
 \defaultfontfeatures{Ligatures = TeX, Mapping = tex-text, HyphenChar = "002D}
@@ -42,14 +42,15 @@
 
 % Таблицы
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{ltablex}
-% \usepackage{makecell}
 \keepXColumns
 \renewcommand{\aboverulesep}{0.1pt}
 \renewcommand{\belowrulesep}{0.1pt}
 \newcommand*{\thead}[1]{\multicolumn{1}{c}{\bfseries #1}}
 
 % Графика
+\usepackage{textcomp}
 \usepackage{graphicx}
 \usepackage{subcaption}
 \graphicspath{{fig/}}
@@ -120,5 +121,6 @@
 % Приложения
 \appendix
 \input{app-a}
+\input{app-b}
 
 \end{document}
