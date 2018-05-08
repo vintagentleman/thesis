@@ -53,26 +53,27 @@
 \end{center}
 
 \vskip\firstskip
-\vskip\secondskip
 \begin{center}
-  \vskip\thirdskip
-  {\@author}
+  {\@title}
   \vskip\fourthskip
   {\topicfont\@topic}
-  \vskip\fifthskip
-  {\@title}
+  \vskip\fourthskip
+  {\@course}
 \end{center}
 \normalfont
-\vskip\sixthskip
+\vskip\firstskip
 \hfill
-\begin{minipage}{.5\linewidth}
+\begin{minipage}{.75\linewidth}
     \begin{flushright}
     \ifx\@apname\empty\else
     \vskip\seventhskip
     \approved\\%
     \appos:\\%
     \@apname
-    \fi  
+    \fi
+    \ifx\@sa\empty\else
+    \vskip\seventhskip\diplomafield{st}
+    \fi
     \ifx\@sa\empty\else
     \vskip\seventhskip\diplomafield{sa}
     \fi
