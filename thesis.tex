@@ -17,7 +17,7 @@
 \usepackage{fvextra}
 \usepackage[babel]{microtype}
 \usepackage[autostyle]{csquotes}
-\usepackage[
+\usepackage[%
     xetex,
     bookmarksnumbered,
     bookmarksopen,
@@ -58,21 +58,22 @@
 
 % Библиография
 \usepackage{csquotes}
-\usepackage[
-    backend = biber,       % Движок
-    bibencoding = utf8,    % Кодировка файлов с библиографическими БД
-    style = gost-numeric,  % Стиль цитирования по ГОСТ
-    language = auto,       % Получение языка из babel/polyglossia; ссылки на страницы на языке оригинала
-    autolang = other,      % Многоязычная библиография
-    clearlang = true,      % Внутренний сброс поля language при совпадении с языком из babel/polyglossia
-    sortcites = true,      % Сортировка затекстовых ссылок при цитировании
-    movenames = false,     % Не менять местами заголовок и список авторов, если последних больше четырёх
-    minbibnames = 3,       % Число авторов, отображаемое при сокращении
-    maxbibnames = 5        % Максимальное число авторов в препозиции
+\usepackage[%
+    backend = biber,
+    bibencoding = utf8,
+    style = gost-numeric,
+    language = auto,
+    autolang = other,
+    clearlang = true,
+    sortcites = true,
+    movenames = false,
+    minbibnames = 3,
+    maxbibnames = 5
 ]{biblatex}
 
 \addbibresource{./bib/scat.bib}
-\addbibresource{./bib/stuff.bib}
+\addbibresource{./bib/books.bib}
+\addbibresource{./bib/papers.bib}
 
 % Сортировка библиографии
 \DeclareSourcemap{
@@ -88,14 +89,24 @@
     }
 }
 
-% Счётчик библиографических источников
-\usepackage{totcount}
-\newtotcounter{citnum}
-\AtEveryBibitem{\stepcounter{citnum}}
-
 % Короткое тире во всех интервалах страниц
 \DefineBibliographyExtras{russian}{\protected\def\bibrangedash{\textendash}}
 \DefineBibliographyExtras{french}{\protected\def\bibrangedash{\textendash}}
+
+% Счётчики
+\usepackage{totcount}
+\usepackage{assoccnt}
+\newtotcounter{citnum}
+\AtEveryBibitem{\stepcounter{citnum}}
+
+\newcounter{appnum}
+\newtotcounter{chpnum}
+\DeclareAssociatedCounters{chapter}{appnum}
+\regtotcounter{appnum}
+\preto\appendix{%
+    \setcounter{chpnum}{\value{chapter}}
+    \setcounter{appnum}{0}
+}
 
 \sloppy
 
