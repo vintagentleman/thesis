@@ -15,6 +15,7 @@
 
 % Оформление
 \usepackage{fvextra}
+\usepackage{afterpage}
 \usepackage[babel]{microtype}
 \usepackage[autostyle]{csquotes}
 \usepackage[%
@@ -44,16 +45,18 @@
 % Таблицы
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{makecell}
 \usepackage{ltablex}
 \keepXColumns
 \renewcommand{\aboverulesep}{0.1pt}
 \renewcommand{\belowrulesep}{0.1pt}
-\newcommand*{\thead}[1]{\multicolumn{1}{c}{\bfseries #1}}
+\renewcommand\theadfont{\bfseries\small}
 
 % Графика
 \usepackage{textcomp}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{tikz-er2}
 \graphicspath{{fig/}}
 
 % Библиография
