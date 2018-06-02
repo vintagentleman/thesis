@@ -1,20 +1,25 @@
 \documentclass[specialist, subf, substylefile = spbu.rtx]{disser}
-\usepackage[a4paper, includefoot, left = 3.5cm, right = 1cm, top = 2cm, bottom = 2cm, headsep = 1cm, footskip = 1cm]{geometry}
+\usepackage[%
+    a4paper, includefoot,
+    left = 3.5cm, right = 1cm,
+    top = 2cm, bottom = 2cm,
+    headsep = 1cm, footskip = 1cm
+]{geometry}
 
 % Локализация
 \usepackage{fontspec}
 \usepackage{xecyr}
-\usepackage[polish, french, english, russian]{babel}
+\usepackage[french, english, russian]{babel}
 
 % Шрифты
 \defaultfontfeatures{Ligatures = TeX, Mapping = tex-text, HyphenChar = "002D}
 \setmainfont[Ligatures = {TeX, Historic}]{Times New Roman}
 \setsansfont{Arial}
 \setmonofont{Consolas}
-\newfontfamily{\agio}{AgioUnicode}
 
 % Оформление
 \usepackage{fvextra}
+\usepackage{setspace}
 \usepackage{afterpage}
 \usepackage[babel]{microtype}
 \usepackage[autostyle]{csquotes}
@@ -29,14 +34,16 @@
 
 % Глубина нумерации разделов и оглавления
 \setcounter{secnumdepth}{3}
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
 
 % Нумерация страниц снизу и по центру
 \pagestyle{footcenter}
 \chapterpagestyle{footcenter}
 
 % Сноски
-\usepackage[bottom, perpage]{footmisc}
+\usepackage[bottom]{footmisc}
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
 
 % Списки
 \usepackage{paralist}
@@ -48,8 +55,6 @@
 \usepackage{makecell}
 \usepackage{ltablex}
 \keepXColumns
-\renewcommand{\aboverulesep}{0.1pt}
-\renewcommand{\belowrulesep}{0.1pt}
 \renewcommand\theadfont{\bfseries\small}
 
 % Графика

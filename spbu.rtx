@@ -3,95 +3,60 @@
 \newcommand\specialist@the{\default@the}
 \specialist@the
 
+\def\stlabel{\CYRI\cyrs\cyrp\cyro\cyrl\cyrn\cyri\cyrt\cyre\cyrl\cyrsftsn}
+\def\st#1{\gdef\@st{#1}}\st{}
+\def\ststatus#1{\gdef\@ststatus{#1}}\ststatus{}
+
 \def\diplomafield#1{%
   \csname #1label\endcsname:\\%
   \csname @#1status\endcsname\ \csname @#1\endcsname
 }
-\renewcommand{\cdsep}{\\}
 
 \if@titlepage\renewcommand\maketitle[1][]{
-\ifthenelse{\equal{#1}{en}}{\@titlepage@entrue}{\@titlepage@enfalse}
-\if@titlepage@en
-  \def\appos{Head of Department}
-  \def\approved{Admitted for defence}
-  \def\revname{Reviewer}
-  \def\revsndname{\revname}
-  \def\revlabel{\revname}
-  \def\revsndlabel{\revsndname}
-  \def\saname{Scientific Supervisor}
-  \def\sasndname{\saname}
-  \def\salabel{\saname}
-  \def\sasndlabel{\saname}
-\else
-  \def\appos{\CYRZ\cyra\cyrv\cyre\cyrd\cyru\cyryu\cyrshch\cyri\cyrishrt\ %
-    \cyrk\cyra\cyrf\cyre\cyrd\cyrr\cyro\cyrishrt}
-  \def\approved{\CYRD\cyro\cyrp\cyru\cyrshch\cyre\cyrn\cyra\ %
-    \cyrk\ \cyrz\cyra\cyrshch\cyri\cyrt\cyre}
-\fi
-
-\ifundeflength\firstskip{1.5cm}
-\ifundeflength\secondskip{3.5cm}
-\ifundeflength\thirdskip{3ex}
-\ifundeflength\fourthskip{2ex}
-\ifundeflength\fifthskip{4ex}
-\ifundeflength\sixthskip{2.5cm}
-\ifundeflength\seventhskip{1ex}
-
-\setlength\fieldhshift{8.5cm}
-
-\def\titlefont{\Large\bfseries}
-\def\topiclabelfont{\large}
-\def\topicfont{\large\bfseries}
-
-\def\workname{\CYRR\cyra\cyrb\cyro\cyrt\cyra}
-
 \thispagestyle{empty}
-\enlargethispage{2cm}
+\enlargethispage{1.75cm}
 \vspace*{-2cm}
+
 \begin{center}
-  {\instfont\@institution}
+  \singlespacing
+  {\scshape\@institution}
 \end{center}
 
-\vskip\firstskip
+\vskip 1.5cm
+
 \begin{center}
   {\@title}
-  \vskip\fourthskip
-  {\topicfont\@topic}
-  \vskip\fourthskip
+  \vskip 0.5cm
+  {\bfseries\@topic}
+  \vskip 0.5cm
   {\@course}
 \end{center}
-\normalfont
-\vskip\firstskip
-\hfill
-\begin{minipage}{.75\linewidth}
-    \begin{flushright}
-    \ifx\@apname\empty\else
-    \vskip\seventhskip
-    \approved\\%
-    \appos:\\%
-    \@apname
-    \fi
-    \ifx\@sa\empty\else
-    \vskip\seventhskip\diplomafield{st}
-    \fi
-    \ifx\@sa\empty\else
-    \vskip\seventhskip\diplomafield{sa}
-    \fi
-    \ifx\@sasnd\empty\else
-    \vskip\seventhskip\diplomafield{sasnd}
-    \fi
-    \ifx\@rev\empty\else
-    \vskip\seventhskip\diplomafield{rev}
-    \fi
-    \ifx\@revsnd\empty\else
-    \vskip\seventhskip\diplomafield{revsnd}
-    \fi
-    \end{flushright}
-\end{minipage}
+
+\vskip 1.5cm
+
+\begin{flushright}
+  \singlespacing
+  \ifx\@st\empty\else
+  \diplomafield{st}
+  \vskip 0.5cm
+  \fi
+  \ifx\@sa\empty\else
+  \diplomafield{sa}
+  \vskip 0.5cm
+  \fi
+  \ifx\@rev\empty\else
+  \diplomafield{rev}
+  \vskip 0.5cm
+  \fi
+\end{flushright}
+
 \vfill
+
 \begin{center}
-  {\@city\cdsep\@date}
+  \singlespacing
+  {\@city\\\@date}
 \end{center}
+
 \normalfont\clearpage
 }\fi
 \endinput
