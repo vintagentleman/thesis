@@ -1,0 +1,328 @@
+\documentclass[xetex, aspectratio = 169]{beamer}
+\usecolortheme{beaver}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{footline}[frame number]
+
+\usepackage{fontspec}
+\usepackage{xecyr}
+\usepackage[russian]{babel}
+
+\usepackage{fvextra}
+\usepackage[babel]{microtype}
+\usepackage[autostyle]{csquotes}
+
+\defaultfontfeatures{Ligatures = {TeX, Historic}, Mapping = tex-text}
+\setmainfont{CMU Serif}
+\setsansfont{CMU Sans Serif}
+\setmonofont{CMU Typewriter Text}
+\newfontfamily{\agio}{AgioUnicode}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{tabularx}
+\renewcommand\theadfont{\normalsize}
+
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{tikz-er2}
+\graphicspath{{fig/}}
+
+\usepackage{schemata}
+\usepackage{fancyvrb}
+
+\begin{document}
+
+\title{Автоматическая лемматизация текстов в корпусе СКАТ \\ на основе морфологической разметки}
+\author{Сипунин Константин Владимирович}
+\institute{Научный руководитель: к.",ф.",н., доц.\ Алексеева~Е.",Л.}
+\date{\today}
+
+\frame{\titlepage\addtocounter{framenumber}{-1}}
+
+\begin{frame}{Задачи работы}
+    \begin{enumerate}
+        \item<1-> Ознакомление с системами представления грамматической информации в существующих восточнославянских исторических корпусах
+        \begin{itemize}
+            \item Исторические подкорпуса Национального корпуса русского языка (НКРЯ)
+            \item Регенсбургский диахронический корпус русского языка (RRuDi)
+            \item Информационно"=аналитическая система "<Манускрипт">
+            \item Санкт"=Петербургский корпус агиографических текстов (СКАТ)
+        \end{itemize}
+        \item<2-> Изучение представленной в СКАТ системы церковнославянского именного словоизменения и формальный учёт его особенностей в ходе программной разработки алгоритма лемматизации размеченных словоформ
+        \item<3-> Организация полнофункционального доступа к СКАТ (включая его аннотированный и частично лемматизированный подкорпус) при помощи платформы проекта Textom\'etrie "--- TXM
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Восточнославянские исторические корпуса}
+    \begin{table}[t]
+        \small
+        \begin{tabularx}{\linewidth}{XXXXXX}
+            \toprule
+            \thead{Корпус} & \thead{Период, \\ вв.} & \thead{Объём, \\ с/у} & \thead{Разметка} & \thead{Дизамби"= \\ гуация} & \thead{Леммати"= \\ зация} \\ \midrule\midrule
+            Манускрипт & X--XIV & 3,5~млн & Словарная & Локальная & Есть \\ \midrule
+            RRuDi & X--XVIII & 115+~тыс. & Гибридная & Нет & Есть \\ \midrule
+            НКРЯ др."~р. & XI--XIV & 500~тыс. & Ручная & Полная & Есть \\ \midrule
+            НКРЯ б.~гр. & XI--XV & 20~тыс. & Ручная & Полная & Есть \\ \midrule
+            СКАТ & XV--XVII & 500~тыс. & Ручная & Полная & \textcolor{red}{Нет} \\ \midrule
+            НКРЯ ст."~р. & XV--XVII & 7~млн & Нет & Нет & Нет \\ \midrule
+            НКРЯ ц."~сл. & XVII--XX & 4,7~млн & Словарная & Нет & Есть \\ \bottomrule
+        \end{tabularx}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Морфологическая разметка СКАТ}
+    \footnotesize \setlength{\aboverulesep}{0.5pt} \setlength{\belowrulesep}{0.5pt}
+    \begin{tabularx}{\textwidth}{Xp{1cm}p{1cm}p{1cm}p{1cm}p{1cm}p{1cm}}
+        \toprule
+        \texttt{М(с)ЦА}            & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{IЮНR}              & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{ДНЬ\#}             & сущ  & en & им  & ед & м  &    \\ \midrule
+        \texttt{А\#}               & 1    &    &     &    &    &    \\ \midrule
+        \texttt{ЖИТIЕ}             & сущ  & jo & им  & ед & ср &    \\ \midrule
+        \texttt{И}                 & союз &    &     &    &    &    \\ \midrule
+        \texttt{ПОДВИЗИ}           & сущ  & о  & им  & мн & м  & *  \\ \midrule
+        \texttt{И}                 & союз &    &     &    &    &    \\ \midrule
+        \texttt{W(Т)ЧАСТИ\&}       & нар  &    &     &    &    &    \\ \midrule
+        \texttt{ЧЮДЕ(с)}           & сущ  & es & род & мн & ср &    \\ \midrule
+        \texttt{ИСПОВ+ДА(н)Е}      & сущ  & jo & им  & ед & ср & +и \\ \midrule
+        \texttt{ПРП(Д)БНА(г)}      & прил & тв & род & ед & м  &    \\ \midrule
+        \texttt{W(ц)}              & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{НШЕ(г)}            & мест & м  & род & ед & м  &    \\ \midrule
+        \texttt{*ДIОНIСIА}         & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{*ГЛD(ШИ)ЦКА(г);\&} & прил & тв & род & ед & м  &    \\ \bottomrule
+    \end{tabularx}
+\end{frame}
+
+\begin{frame}{Алгоритм лемматизации}
+    \begin{block}{}
+        \begin{columns}
+            \column{0.5\linewidth}
+            \begin{enumerate}
+                \item Орфографическая нормализация
+                \item Стемминг
+                \item Преобразование основы
+                \item Добавление словарной флексии
+            \end{enumerate}
+            
+            \column{0.5\linewidth}
+            \begin{itemize}
+                \item[] {\agio пр҇ⷪроцѣⷯ, бл҃гообразенъ}
+                \item[] {\agio пророц\textcolor{red}{ѣхъ}, благообразен\textcolor{red}{ъ}}
+                \item[] {\agio проро\textcolor{blue}{к}, благообраз\textcolor{blue}{н}}
+                \item[] {\agio пророк\textcolor{green}{ъ}, благообразн\textcolor{green}{ыи}}
+            \end{itemize}
+        \end{columns}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Словоизменительные парадигмы}
+    \begin{columns}
+        \column{0.5\linewidth}
+        \begin{exampleblock}{Парадигма типа *\={a} в ед.~ч.\ м.~р.}
+            \begin{Verbatim}[fontsize=\small]
+('a', 'им', 'ед', 'м'): 'А',
+('a', 'род', 'ед', 'м'): '[ИЫ]',
+('a', 'дат', 'ед', 'м'): '[+ЕИЫ]',
+('a', 'вин', 'ед', 'м'): 'У',
+('a', 'тв', 'ед', 'м'): 'ОЮ',
+('a', 'мест', 'ед', 'м'): '[+ЕИЫ]',
+('a', 'зв', 'ед', 'м'): 'О',
+            \end{Verbatim}
+        \end{exampleblock}
+        
+        \column{0.5\linewidth}
+        \begin{exampleblock}{Парадигма возвратного местоимения}
+            \begin{Verbatim}[fontsize=\small]
+'род': ('С([ЕО]Б)?[+ЕЯ]', 'СЕБЕ'),
+'дат': ('С([ЕО]Б[+Е]|И)', 'СЕБЕ'),
+'вин': ('С([ЕО]Б)?[+ЕЯ]', 'СЕБЕ'),
+'тв': ('СОБОЮ', 'СЕБЕ'),
+'мест': ('С[ЕО]Б[+Е]', 'СЕБЕ'),
+
+
+            \end{Verbatim}
+        \end{exampleblock}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Преобразования основ}
+    \begin{alertblock}{Морфонология}
+        \begin{enumerate}
+            \item Вторая палатализация
+            \begin{itemize}
+                \item {\agio подвизи} "--- {\agio подвигъ}, {\agio еллинстіи} "--- {\agio еллинскии}
+            \end{itemize}
+            \item Прояснение и падение редуцированных
+            \begin{itemize}
+                \item {\agio помыслы} "--- {\agio помыселъ}, {\agio тонокъ} "--- {\agio тонкии}
+            \end{itemize}
+            \item Смешение типов склонения *\u{o}/*j\={a} и *\u{o}/*en
+            \begin{itemize}
+                \item {\agio братіѧ} "--- {\agio братъ}, {\agio вѧтчѧне} "--- {\agio вѧтчѧнинъ}
+            \end{itemize}
+        \end{enumerate}
+    \end{alertblock}
+    
+    \begin{alertblock}{Орфография}
+        \begin{enumerate}
+            \item Усечение основ
+            \begin{itemize}
+                \item {\agio по҇ⷭ} "--- {\agio постъ}, {\agio старѡ҇ⷭ} "--- {\agio старость}
+            \end{itemize}
+            \item Усечение и наращение окончаний
+            \begin{itemize}
+                \item {\agio рожеⷩи} "--- {\agio рожение}, {\agio браніи} "--- {\agio брань}
+            \end{itemize}
+        \end{enumerate}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Частные случаи}
+    \begin{alertblock}{}
+        \begin{enumerate}
+            \item Составные существительные
+            \begin{itemize}
+                \item {\agio новѣградѣ} "--- {\agio новградъ}, {\agio полꙋнощи} "--- {\agio полнощь}
+            \end{itemize}
+            \item Составные числительные
+            \begin{itemize}
+                \item {\agio двꙋдесятꙋ} "--- {\agio двадесяти}, {\agio осмисотъ} "--- {\agio осмьсотъ}
+            \end{itemize}
+            \item Pluralia tantum
+            \begin{itemize}
+                \item {\agio вратъ} "--- {\agio врата}, {\agio мощемъ} "--- {\agio мощи}
+            \end{itemize}
+        \end{enumerate}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Леммы}
+    \footnotesize \setlength{\aboverulesep}{0.5pt} \setlength{\belowrulesep}{0.5pt}
+    \begin{tabularx}{\textwidth}{XXp{0.75cm}p{0.75cm}p{0.75cm}p{0.75cm}p{0.75cm}p{0.75cm}}
+        \toprule
+        \texttt{М(с)ЦА} & \texttt{МЕСЯЦЬ}                & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{IЮНR} & \texttt{ИЮНЬ}                    & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{ДНЬ\#} & \texttt{ДЕНЬ}                   & сущ  & en & им  & ед & м  &    \\ \midrule
+        \texttt{А\#} &                                   & 1    &    &     &    &    &    \\ \midrule
+        \texttt{ЖИТIЕ} & \texttt{ЖИТИЕ}                  & сущ  & jo & им  & ед & ср &    \\ \midrule
+        \texttt{И} & \texttt{И}                          & союз &    &     &    &    &    \\ \midrule
+        \texttt{ПОДВИЗИ} & \texttt{ПОДВИГЪ}              & сущ  & о  & им  & мн & м  & *  \\ \midrule
+        \texttt{И} & \texttt{И}                          & союз &    &     &    &    &    \\ \midrule
+        \texttt{W(Т)ЧАСТИ\&} & \texttt{ОТЧАСТИ}          & нар  &    &     &    &    &    \\ \midrule
+        \texttt{ЧЮДЕ(с)} & \texttt{ЧЮДО}                 & сущ  & es & род & мн & ср &    \\ \midrule
+        \texttt{ИСПОВ+ДА(н)Е} & \texttt{ИСПОВ+ДАНИЕ}     & сущ  & jo & им  & ед & ср & +и \\ \midrule
+        \texttt{ПРП(Д)БНА(г)} & \texttt{ПРЕПОДОБНЫИ}     & прил & тв & род & ед & м  &    \\ \midrule
+        \texttt{W(ц)} & \texttt{ОТЕЦЬ}                   & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{НШЕ(г)} & \texttt{НАШЬ}                  & мест & м  & род & ед & м  &    \\ \midrule
+        \texttt{*ДIОНIСIА} & \texttt{*ДИОНИСИИ}          & сущ  & jo & род & ед & м  &    \\ \midrule
+        \texttt{*ГЛD(ШИ)ЦКА(г);\&} & \texttt{*ГЛУШИЦКИИ} & прил & тв & род & ед & м  &    \\ \bottomrule
+    \end{tabularx}
+\end{frame}
+
+\begin{frame}{Цифры}
+    \begin{block}{Всего}
+        \par\medskip
+        \schema[close]{
+            \schemabox{
+                \begin{minipage}{0.5\textwidth}
+                    \begin{itemize}
+                        \item Житие Димитрия Прилуцкого
+                        \item Житие Дионисия Глушицкого
+                        \item Житие Кирилла Новоезерского
+                    \end{itemize}
+                \end{minipage}
+            }
+        }{
+            \schemabox{
+                \begin{minipage}{0.5\textwidth}
+                    \begin{center}
+                        \emph{29",617~с/ф}
+                    \end{center}
+                \end{minipage}
+            }
+        }
+    \end{block}
+    
+    \begin{exampleblock}{Лемматизировано}
+        \par\medskip
+        \schema[close]{
+            \schemabox{
+                \begin{minipage}{0.5\textwidth}
+                    \begin{itemize}
+                        \item 7",893 существительных
+                        \item 2",975 прилагательных
+                        \item 3",840 местоимений
+                        \item 150 числительных
+                        \item 9",461 неизменяемое слово
+                    \end{itemize}
+                \end{minipage}
+            }
+        }{
+            \schemabox{
+                \begin{minipage}{0.5\textwidth}
+                    \begin{center}
+                        \emph{24",319~с/ф}
+                    \end{center}
+                \end{minipage}
+            }
+        }
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]{XML"=представление}
+    \begin{Verbatim}[fontsize=\tiny]
+<pb n="201"/><lb n="1"/>
+<w xml:id="DmPrlc.1" ana="сущ;jo;род;ед;м" lemma="месяць" reg="месяца" src="М(с)ЦА">м҇ⷭца</w>
+<w xml:id="DmPrlc.2" ana="сущ;jo;род;ед;м" lemma="февраль" reg="февраля" src="FЕВРАЛR">ѳевралѧ</w>
+<pc xml:id="DmPrlc.3">.</pc>
+<num>
+  <w xml:id="DmPrlc.4" reg="11" src="АI#">аї҃</w>
+</num>
+<pc xml:id="DmPrlc.5">.</pc>
+<w xml:id="DmPrlc.6" ana="сущ;jo;им;ед;ср" lemma="житие" reg="житие" src="ЖИТIЕ">житїе</w>
+<w xml:id="DmPrlc.7" ana="прил;тв;род;ед;м" lemma="преподобныи" reg="преподобнаго" src="ПРПW(ДО)&amp;БНАГО">прпѡⷣⷪ
+  <lb n="2"/>
+бнаго</w>
+<w xml:id="DmPrlc.8" ana="сущ;jo;род;ед;м" lemma="отець" reg="о(т)ца" src="W(Т)ЦА">ѿца</w>
+<w xml:id="DmPrlc.9" ana="мест;м;род;ед;м" lemma="нашь" reg="нашего" src="НШЕГО#">нш҃его</w>
+<name>
+  <w xml:id="DmPrlc.10" ana="сущ;jo;род;ед;м" lemma="*димитрии" reg="*димитрия" src="*ДIМИТРIА">дїмитрїа</w>
+</name>
+<pc xml:id="DmPrlc.11">,</pc>
+<w xml:id="DmPrlc.12" ana="сущ;o;род;ед;м" lemma="игуменъ" reg="игумена" src="ИГU&amp;МЕНА">игѹ<lb n="3"/>мена</w>
+<name>
+  <w xml:id="DmPrlc.13" ana="прил;тв;род;ед;м" lemma="*прилуцкии" reg="*прилуцкаго" src="*ПРИЛUЦКАГО">прилѹцкаго</w>
+</name>
+<pc xml:id="DmPrlc.14">.</pc>
+    \end{Verbatim}
+\end{frame}
+
+\begin{frame}{Работа с TXM}
+    \centering
+    \begin{figure}[h]
+        \begin{overlayarea}{\textwidth}{\textheight}
+            \only<1>{\includegraphics[width=\textwidth]{txm_view}}
+            \only<2>{\includegraphics[width=\textwidth]{txm_search}}
+            \only<3>{\includegraphics[width=\textwidth]{txm_output}}
+        \end{overlayarea}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Программная реализация}
+    \framesubtitle{\url{https://github.com/vintagentleman/SCAT}}
+    \centering
+    \begin{tikzpicture}[node distance = 2.75cm, every edge/.style = {link}]
+        \node[entity] (src) {Неразмеченные тексты (txt, CP866)};
+        \node[relationship] (srctotxt) [below of = src] {src\_to\_txt.py} edge (src);
+        \node[entity] (txt) [below of = srctotxt] {Неразмеченные тексты (csv, UTF-8)} edge [<-] (srctotxt);
+        \node[entity, xshift = 3.75cm] (grm) [right of = txt] {Размеченные тексты (csv, UTF-8)};
+        \node[relationship, xshift = 3.75cm] (txttoxml) [right of = srctotxt] {txt\_to\_xml.py};
+        \node[entity, xshift = 3.75cm] (xml) [right of = src] {TEI-XML} edge [<-] (txttoxml);
+        \path (txttoxml) edge (txt) edge (grm);
+    \end{tikzpicture}
+\end{frame}
+
+\end{document}
