@@ -1,0 +1,135 @@
+\documentclass[specialist, subf, substylefile=spbu.rtx]{disser}
+\usepackage[%
+    a4paper, includefoot,
+    left=3.5cm, right=1cm,
+    top=2cm, bottom=2cm,
+    headsep=1cm, footskip=1cm
+]{geometry}
+
+% Локализация
+\usepackage{fontspec}
+\usepackage{xecyr}
+\usepackage[french, english, russian]{babel}
+
+% Шрифты
+\defaultfontfeatures{Ligatures=TeX, Mapping=tex-text, HyphenChar="002D}
+\setmainfont[Ligatures={TeX, Historic}]{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Consolas}
+
+% Оформление
+\usepackage{fvextra}
+\usepackage{setspace}
+\usepackage{afterpage}
+\usepackage[babel]{microtype}
+\usepackage[autostyle]{csquotes}
+\usepackage[%
+    xetex,
+    bookmarksnumbered,
+    bookmarksopen,
+    colorlinks,
+    allcolors=blue,
+    hyperfootnotes=false
+]{hyperref}
+
+% Глубина нумерации разделов и оглавления
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+% Нумерация страниц снизу и по центру
+\pagestyle{footcenter}
+\chapterpagestyle{footcenter}
+
+% Сноски
+\usepackage[bottom]{footmisc}
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+% Списки
+\usepackage{paralist}
+\setdefaultleftmargin{\parindent}{}{}{}{}{}
+
+% Таблицы
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{ltablex}
+\keepXColumns
+\renewcommand\theadfont{\bfseries\small}
+
+% Графика
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{fig/}}
+
+% Библиография
+\usepackage{csquotes}
+\usepackage[%
+    backend=biber,
+    bibencoding=utf8,
+    style=gost-numeric,
+    language=auto,
+    autolang=other,
+    clearlang=true,
+    sortcites=true,
+    movenames=false,
+    minbibnames=3,
+    maxbibnames=5
+]{biblatex}
+
+% \addbibresource{}
+
+% Сортировка библиографии
+\DeclareSourcemap{
+    \maps[datatype=bibtex]{
+        \map{
+            \step[fieldsource=langid, match=russian, final]
+            \step[fieldset=presort, fieldvalue={a}]
+        }
+        \map{
+            \step[fieldsource=langid, notmatch=russian, final]
+            \step[fieldset=presort, fieldvalue={z}]
+        }
+    }
+}
+
+% Короткое тире во всех интервалах страниц
+\DefineBibliographyExtras{russian}{\protected\def\bibrangedash{\textendash}}
+\DefineBibliographyExtras{french}{\protected\def\bibrangedash{\textendash}}
+
+% Счётчики
+\usepackage{totcount}
+\usepackage{assoccnt}
+\newtotcounter{citnum}
+\AtEveryBibitem{\stepcounter{citnum}}
+
+\newcounter{appnum}
+\newtotcounter{chpnum}
+\DeclareAssociatedCounters{chapter}{appnum}
+\regtotcounter{appnum}
+\preto\appendix{%
+    \setcounter{chpnum}{\value{chapter}}
+    \setcounter{appnum}{0}
+}
+
+\sloppy
+
+\begin{document}
+
+% Титульный лист, аннотация, оглавление
+\input{title}
+\input{abstract}
+\tableofcontents
+
+% Текст работы
+% \input{}
+
+% Библиография
+% \printbibliography[heading=bibintoc]
+
+% Приложения
+% \appendix
+% \input{}
+
+\end{document}
