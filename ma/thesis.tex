@@ -1,4 +1,6 @@
 \documentclass[specialist, subf, substylefile=spbu.rtx]{disser}
+
+% Поля
 \usepackage[%
     a4paper, includefoot,
     left=3.5cm, right=1cm,
@@ -9,7 +11,7 @@
 % Локализация
 \usepackage{fontspec}
 \usepackage{xecyr}
-\usepackage[french, english, russian]{babel}
+\usepackage[polish, english, russian]{babel}
 
 % Шрифты
 \defaultfontfeatures{Ligatures=TeX, Mapping=tex-text, HyphenChar="002D}
@@ -46,8 +48,11 @@
 \counterwithout{footnote}{chapter}
 
 % Списки
-\usepackage{paralist}
+\usepackage[defblank]{paralist}
 \setdefaultleftmargin{\parindent}{}{}{}{}{}
+
+% Колонки
+\usepackage{multicol}
 
 % Таблицы
 \usepackage{booktabs}
@@ -56,6 +61,7 @@
 \usepackage{ltablex}
 \keepXColumns
 \renewcommand\theadfont{\bfseries\small}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 % Графика
 \usepackage{textcomp}
@@ -63,55 +69,69 @@
 \usepackage{subcaption}
 \graphicspath{{fig/}}
 
-% Библиография
-\usepackage{csquotes}
-\usepackage[%
-    backend=biber,
-    bibencoding=utf8,
-    style=gost-numeric,
-    language=auto,
-    autolang=other,
-    clearlang=true,
-    sortcites=true,
-    movenames=false,
-    minbibnames=3,
-    maxbibnames=5
-]{biblatex}
+\usepackage{tikz}
+\usepackage{tikzscale}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta}
 
-% \addbibresource{}
-
-% Сортировка библиографии
-\DeclareSourcemap{
-    \maps[datatype=bibtex]{
-        \map{
-            \step[fieldsource=langid, match=russian, final]
-            \step[fieldset=presort, fieldvalue={a}]
-        }
-        \map{
-            \step[fieldsource=langid, notmatch=russian, final]
-            \step[fieldset=presort, fieldvalue={z}]
+\forestset{
+    default preamble={
+        before typesetting nodes={
+            !r.replace by={[, coordinate, append]}
+        },
+        where n children=0{
+            tier=word,
+        }{
+            rectangle, aspect=2,
+        },
+        where level=0{}{
+            if n=1{
+                edge label={node[pos=.2, above] {да}},
+            }{
+                edge label={node[pos=.2, above] {нет}},
+            }
+        },
+        for tree={
+            base=botton,
+            child anchor=north,
+            parent anchor=south,
+            align=center,
+            edge+={thick, -Latex},
+            s sep'+=5cm,
+            draw,
+            thick,
+            edge path'={ (!u) -| (.parent)},
         }
     }
 }
 
-% Короткое тире во всех интервалах страниц
-\DefineBibliographyExtras{russian}{\protected\def\bibrangedash{\textendash}}
-\DefineBibliographyExtras{french}{\protected\def\bibrangedash{\textendash}}
-
-% Счётчики
+% Счётчики глав и приложений
 \usepackage{totcount}
 \usepackage{assoccnt}
-\newtotcounter{citnum}
-\AtEveryBibitem{\stepcounter{citnum}}
 
 \newcounter{appnum}
-\newtotcounter{chpnum}
-\DeclareAssociatedCounters{chapter}{appnum}
 \regtotcounter{appnum}
+
+\newcounter{chpnum}
+\DeclareAssociatedCounters{chapter}{chpnum}
+\regtotcounter{chpnum}
+
 \preto\appendix{%
     \setcounter{chpnum}{\value{chapter}}
-    \setcounter{appnum}{0}
+    \setcounter{appnum}{1}
 }
+
+% Настройка библиографии
+\input{../bib/biblatex}
+\addbibresource{../bib/scat.bib}
+\addbibresource{../bib/books.bib}
+\addbibresource{../bib/papers.bib}
+
+% Заметки
+\usepackage{todonotes}
+
+% Аббревиатуры без переносов
+\hyphenation{СПбГУ}
 
 \sloppy
 
@@ -123,13 +143,17 @@
 \tableofcontents
 
 % Текст работы
-% \input{}
+\input{intro}
+\input{1}
+\input{2}
+\input{concl}
 
 % Библиография
-% \printbibliography[heading=bibintoc]
+\printbibliography[heading=bibintoc]
 
 % Приложения
-% \appendix
-% \input{}
+\appendix
+\input{app-a}
+\input{app-b}
 
 \end{document}
