@@ -18,28 +18,23 @@
 \vspace*{-2cm}
 
 \begin{center}
-  \singlespacing
-  {\scshape\@institution}
-\end{center}
-
-\vskip 1.5cm
-
-\begin{center}
+  {\@institution}
+  \bfseries
+  \vskip 2cm
+  {\@st}
+  \vskip 0.5cm
   {\@title}
   \vskip 0.5cm
-  {\bfseries\@topic}
-  \vskip 0.5cm
+  {\@topic}
+  \normalfont
+  \vskip 3cm
   {\@course}
 \end{center}
 
-\vskip 1.5cm
+\vskip 2cm
 
 \begin{flushright}
   \singlespacing
-  \ifx\@st\empty\else
-  \diplomafield{st}
-  \vskip 0.5cm
-  \fi
   \ifx\@sa\empty\else
   \diplomafield{sa}
   \vskip 0.5cm
