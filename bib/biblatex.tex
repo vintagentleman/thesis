@@ -25,7 +25,30 @@
     }
 }
 
-% Отображение диссертаций без дублирования автора
+%%% Убираем неразрывные пробелы перед двоеточием и точкой с запятой
+\makeatletter
+
+\renewcommand*{\addcolondelim}{%
+    \begingroup%
+    \def\abx@colon{%
+        \ifdim\lastkern>\z@\unkern\fi%
+        \abx@puncthook{:}\space}%
+    \addcolon%
+    \endgroup%
+}
+
+\renewcommand*{\addsemicolondelim}{%
+    \begingroup%
+    \def\abx@semicolon{%
+        \ifdim\lastkern>\z@\unkern\fi%
+        \abx@puncthook{;}\space}%
+    \addsemicolon%
+    \endgroup%
+}
+
+\makeatother
+
+%%% Правка записей типа thesis, чтобы дважды не писался автор
 \DeclareBibliographyDriver{thesis}{%
     \usebibmacro{bibindex}%
     \usebibmacro{begentry}%
@@ -52,7 +75,7 @@
     \newunit\newblock
     \usebibmacro{related:init}%
     \usebibmacro{related}%
-    \usebibmacro{finentry}
+    \usebibmacro{finentry}%
 }
 
 % Короткое тире в интервалах страниц
