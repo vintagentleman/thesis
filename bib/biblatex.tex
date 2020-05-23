@@ -25,7 +25,7 @@
     }
 }
 
-%%% Убираем неразрывные пробелы перед двоеточием и точкой с запятой
+% Убираем неразрывные пробелы перед двоеточием и точкой с запятой
 \makeatletter
 
 \renewcommand*{\addcolondelim}{%
@@ -48,7 +48,7 @@
 
 \makeatother
 
-%%% Правка записей типа thesis, чтобы дважды не писался автор
+% Правка записей типа thesis, чтобы дважды не писался автор
 \DeclareBibliographyDriver{thesis}{%
     \usebibmacro{bibindex}%
     \usebibmacro{begentry}%
@@ -80,7 +80,12 @@
 
 % Короткое тире в интервалах страниц
 \DefineBibliographyExtras{russian}{\protected\def\bibrangedash{\textendash}}
+\DefineBibliographyExtras{french}{\protected\def\bibrangedash{\textendash}}
 
 % Счётчик цитируемых источников
 \newtotcounter{citnum}
 \AtEveryBibitem{\stepcounter{citnum}}
+
+% Источники
+\addbibresource{../bib/*/*.bib}
+\addbibresource{../bib/*/*/*.bib}
