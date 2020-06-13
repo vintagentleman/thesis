@@ -59,7 +59,7 @@
 \begin{frame}
     \frametitle{Санкт"=Петербургский корпус агиографических текстов}
     \framesubtitle{СКАТ}
-    \begin{block}<1->{Факты}
+    \begin{block}{Факты}
         \begin{itemize}
             \item материал~"--- списки житий древнерусских святых XV--XVII~вв.
             \item объём~"--- порядка 50~текстов, 500~тыс.\ словоупотреблений
@@ -68,7 +68,7 @@
         \end{itemize}
     \end{block}
 
-    \begin{alertblock}<2->{Проблемы}
+    \begin{alertblock}{Проблемы}
         \begin{itemize}
             \item нет полной лемматизации (ранее были покрыты только имена)
             \item морфологическая разметка ручная~"--- следовательно, медленная
@@ -77,15 +77,15 @@
 \end{frame}
 
 \begin{frame}{Цель и задачи работы}
-    \begin{block}<1->{Цель}
+    \begin{block}{Цель}
         теоретическая разработка и практическая реализация компонентов грамматического модуля корпуса СКАТ
     \end{block}
 
-    \begin{block}<2->{Задачи}
+    \begin{block}{Задачи}
         \begin{enumerate}
-            \item<2-> изучение проблем глагольного словоизменения в церковнославянском языке XV--XVII~вв.\ в рамках задачи лемматизации
-            \item<3-> программная реализация компонента для лемматизации глаголов, представленных на привлечённом материале
-            \item<4-> разработка программного компонента для прецедентной разметки текстов СКАТ, грамматической разметкой не обладающих
+            \item изучение проблем глагольного словоизменения в церковнославянском языке XV--XVII~вв.\ в рамках задачи лемматизации
+            \item программная реализация компонента для лемматизации глаголов, представленных на привлечённом материале
+            \item разработка программного компонента для прецедентной разметки текстов СКАТ, грамматической разметкой не обладающих
         \end{enumerate}
     \end{block}
 \end{frame}
@@ -121,18 +121,18 @@
 \begin{frame}{Термины}
     \begin{columns}
         \column{0.5\textwidth}
-        \begin{block}<1->{Нормализация}
+        \begin{block}{Нормализация}
             идентификация графического инварианта
         \end{block}
         \column{0.5\textwidth}
-        \begin{block}<2->{Лемматизация}
+        \begin{block}{Лемматизация}
             идентификация лексического инварианта
         \end{block}
     \end{columns}
 
     \begin{columns}
         \column{0.5\textwidth}
-        \begin{block}<1->{}
+        \begin{block}{}
             \schema[close]{
                 \schemabox{
                     \begin{minipage}{0.5\textwidth}
@@ -155,7 +155,7 @@
         \end{block}
 
         \column{0.5\linewidth}
-        \begin{block}<2->{}
+        \begin{block}{}
             \schema[close]{
                 \schemabox{
                     \begin{minipage}{0.5\textwidth}
@@ -188,22 +188,22 @@
 \begin{frame}{Лемматизация}
     \begin{columns}
         \column{0.5\linewidth}
-        \begin{block}<1->{Алгоритм}
+        \begin{block}{Алгоритм}
             \begin{enumerate}
-                \item<2-> нормализация
-                \item<3-> отсечение флексии и формативов
-                \item<4-> \alert<6->{преобразование основы}
-                \item<5-> добавление словарной финали
+                \item нормализация
+                \item отсечение флексии и формативов
+                \item \alert{преобразование основы}
+                \item добавление словарной финали
             \end{enumerate}
         \end{block}
 
         \column{0.5\linewidth}
-        \begin{block}<1->{{\agio ѡбрѣтохомъ}}
+        \begin{block}{{\agio ѡбрѣтохомъ}}
             \begin{itemize}
-                \item[]<2-> {\agio обрѣтохомъ}
-                \item[]<3-> {\agio обрѣт}
-                \item[]<4-> {\agio обрѣс}
-                \item[]<5-> {\agio обрѣсти}
+                \item[] {\agio обрѣтохомъ}
+                \item[] {\agio обрѣт}
+                \item[] {\agio обрѣс}
+                \item[] {\agio обрѣсти}
             \end{itemize}
         \end{block}
     \end{columns}
@@ -212,7 +212,7 @@
 \begin{frame}{Формы церковнославянского глагола по типу ФОС}
     \begin{columns}
         \column{0.5\linewidth}
-        \begin{block}<1->{От основы настоящего времени}
+        \begin{block}{От основы настоящего времени}
             \begin{enumerate}
                 \item настоящее-будущее время
                 \item причастия настоящего времени
@@ -221,56 +221,60 @@
         \end{block}
 
         \column{0.5\linewidth}
-        \begin{block}<2->{От основы инфинитива}
+        \begin{block}{От основы инфинитива}
             \begin{enumerate}
                 \item аорист
                 \item имперфект
                 \item причастия прошедшего времени
                 \item эловые причастия
-                \item \alert<3->{инфинитив}
+                \item \alert{инфинитив}
                 \item \textcolor{gray}{супин}
             \end{enumerate}
         \end{block}
     \end{columns}
 \end{frame}
 
-\begin{frame}{Сопоставление классификаций глаголов}
+\begin{frame}
+    \frametitle{Сопоставление классификаций глаголов}
+    \framesubtitle{1--2~кл.}
     \centering
     \scriptsize
+    \begin{tabularx}{\textwidth}{P{1.5cm}P{1.25cm}P{2cm}X}
+        \toprule
+        \thead{Класс \\ (ц.-сл.)} & \thead{Класс \\ (рус.)} & \thead{Подкласс \\ (рус.)} & \thead{Примеры \\ (рус.)} \\ \midrule\midrule
 
-    \only<1>{
-        \begin{tabularx}{\textwidth}{P{1.5cm}P{1.25cm}P{2cm}X}
-            \toprule
-            \thead{Класс \\ (ц.-сл.)} & \thead{Класс \\ (рус.)} & \thead{Подкласс \\ (рус.)} & \thead{Примеры \\ (рус.)} \\ \midrule\midrule
+        & & 1/в & \textit{попрать}~"--- \textit{попрут}, \textit{рвать}~"--- \textit{рвут} \\ \cmidrule{3-4}
+        & V & 1/г & \textit{брать}~"--- \textit{берут}, \textit{звать}~"--- \textit{зовут} \\ \cmidrule{3-4}
+        & & 3 & \textit{реветь}~"--- \textit{ревут} \\ \cmidrule{2-4}
+        1 & VI & & \textit{беречь}~"--- \textit{берегут}, \textit{грести}~"--- \textit{гребут}, \textit{умереть}~"--- \textit{умрут} \\ \cmidrule{2-4}
+        & \multirow{2.5}{*}{VII} & 1 & \textit{блюcти}~"--- \textit{блюдут}, \textit{цвеcти}~"--- \textit{цветут} \\ \cmidrule{3-4}
+        & & 2 & \textit{жить}~"--- \textit{живут}, \textit{слыть}~"--- \textit{слывут} \\ \cmidrule{2-4}
+        & IX & & \textit{взять}~"--- \textit{возьмут}, \textit{начать}~"--- \textit{начнут} \\ \midrule
 
-            & & 1/в & \textit{попрать}~"--- \textit{попрут}, \textit{рвать}~"--- \textit{рвут} \\ \cmidrule{3-4}
-            & V & 1/г & \textit{брать}~"--- \textit{берут}, \textit{звать}~"--- \textit{зовут} \\ \cmidrule{3-4}
-            & & 3 & \textit{реветь}~"--- \textit{ревут} \\ \cmidrule{2-4}
-            1 & VI & & \textit{беречь}~"--- \textit{берегут}, \textit{грести}~"--- \textit{гребут}, \textit{умереть}~"--- \textit{умрут} \\ \cmidrule{2-4}
-            & \multirow{2.5}{*}{VII} & 1 & \textit{блюcти}~"--- \textit{блюдут}, \textit{цвеcти}~"--- \textit{цветут} \\ \cmidrule{3-4}
-            & & 2 & \textit{жить}~"--- \textit{живут}, \textit{слыть}~"--- \textit{слывут} \\ \cmidrule{2-4}
-            & IX & & \textit{взять}~"--- \textit{возьмут}, \textit{начать}~"--- \textit{начнут} \\ \midrule
+        & III & & \textit{двинуть}~"--- \textit{двинут}, \textit{рухнуть}~"--- \textit{рухнут} \\ \cmidrule{2-4}
+        2 & IV & & \textit{разверзнуть}~"--- \textit{разверзнут}, \textit{вянуть}~"--- \textit{вянут} \\ \cmidrule{2-4}
+        & VII & 3 & \textit{деть}~"--- \textit{денут}, \textit{стать}~"--- \textit{станут} \\ \midrule
+    \end{tabularx}
+\end{frame}
 
-            & III & & \textit{двинуть}~"--- \textit{двинут}, \textit{рухнуть}~"--- \textit{рухнут} \\ \cmidrule{2-4}
-            2 & IV & & \textit{разверзнуть}~"--- \textit{разверзнут}, \textit{вянуть}~"--- \textit{вянут} \\ \cmidrule{2-4}
-            & VII & 3 & \textit{деть}~"--- \textit{денут}, \textit{стать}~"--- \textit{станут} \\ \midrule
-        \end{tabularx}
-    }
-    \only<2>{
-        \begin{tabularx}{\textwidth}{P{1.5cm}P{1.25cm}P{2cm}X}
-            \toprule
-            \thead{Класс \\ (ц.-сл.)} & \thead{Класс \\ (рус.)} & \thead{Подкласс \\ (рус.)} & \thead{Примеры \\ (рус.)} \\ \midrule\midrule
+\begin{frame}
+    \frametitle{Сопоставление классификаций глаголов}
+    \framesubtitle{3--4~кл.}
+    \centering
+    \scriptsize
+    \begin{tabularx}{\textwidth}{P{1.5cm}P{1.25cm}P{2cm}X}
+        \toprule
+        \thead{Класс \\ (ц.-сл.)} & \thead{Класс \\ (рус.)} & \thead{Подкласс \\ (рус.)} & \thead{Примеры \\ (рус.)} \\ \midrule\midrule
 
-            \multirow{9}{*}{3} & I & & \textit{вожделеть}~"--- \textit{вожделеют}, \textit{уповать}~"--- \textit{уповают} \\ \cmidrule{2-4}
-            & II & & \textit{даровать}~"--- \textit{даруют}, \textit{помиловать}~"--- \textit{помилуют} \\ \cmidrule{2-4}
-            & & 1/а & \textit{кликать}~"--- \textit{кличут}, \textit{прятать}~"--- \textit{прячут} \\ \cmidrule{3-4}
-            & V & 1/б & \textit{веять}~"--- \textit{веют}, \textit{надеяться}~"--- \textit{надеются} \\ \cmidrule{3-4}
-            & & 2 & \textit{бороться}~"--- \textit{борются}, \textit{пороть}~"--- \textit{порют} \\ \cmidrule{2-4}
-            & VIII & & \textit{давать}~"--- \textit{дают}, \textit{познавать}~"--- \textit{познают} \\ \midrule
+        \multirow{9}{*}{3} & I & & \textit{вожделеть}~"--- \textit{вожделеют}, \textit{уповать}~"--- \textit{уповают} \\ \cmidrule{2-4}
+        & II & & \textit{даровать}~"--- \textit{даруют}, \textit{помиловать}~"--- \textit{помилуют} \\ \cmidrule{2-4}
+        & & 1/а & \textit{кликать}~"--- \textit{кличут}, \textit{прятать}~"--- \textit{прячут} \\ \cmidrule{3-4}
+        & V & 1/б & \textit{веять}~"--- \textit{веют}, \textit{надеяться}~"--- \textit{надеются} \\ \cmidrule{3-4}
+        & & 2 & \textit{бороться}~"--- \textit{борются}, \textit{пороть}~"--- \textit{порют} \\ \cmidrule{2-4}
+        & VIII & & \textit{давать}~"--- \textit{дают}, \textit{познавать}~"--- \textit{познают} \\ \midrule
 
-            4 & X & & \textit{любить}~"--- \textit{любят}, \textit{видеть}~"--- \textit{видят}, \textit{бояться}~"--- \textit{боятся} \\ \bottomrule
-        \end{tabularx}
-    }
+        4 & X & & \textit{любить}~"--- \textit{любят}, \textit{видеть}~"--- \textit{видят}, \textit{бояться}~"--- \textit{боятся} \\ \bottomrule
+    \end{tabularx}
 \end{frame}
 
 \begin{frame}{Несовпадение основ прошедшего времени и инфинитива}
@@ -287,14 +291,14 @@
 \end{frame}
 
 \begin{frame}{Оценка результатов}
-    \begin{exampleblock}<1->{Показатели}
+    \begin{exampleblock}{Показатели}
         \begin{itemize}
             \item полнота 100\%
             \item точность \char`~99\%
         \end{itemize}
     \end{exampleblock}
 
-    \begin{alertblock}<2->{Ошибки}
+    \begin{alertblock}{Ошибки}
         \begin{enumerate}
             \item формы с дистактным расположением возвратного постфикса \begin{itemize}
                 \item \textsc{(на тебе сr) надѣемь} $\rightarrow$ \textsc{надѣяти}
