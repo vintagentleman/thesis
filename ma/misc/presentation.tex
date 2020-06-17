@@ -1,0 +1,420 @@
+\documentclass[xetex, aspectratio=169]{beamer}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{footline}[frame number]
+
+\usepackage{fontspec}
+\usepackage{xecyr}
+\usepackage[russian]{babel}
+
+\usepackage{fvextra}
+\usepackage[babel]{microtype}
+\usepackage[autostyle]{csquotes}
+\usepackage[decimalsymbol=comma]{siunitx}
+
+\defaultfontfeatures{Ligatures={TeX, Historic}, Mapping=tex-text}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Fira Code}
+\newfontfamily{\agio}{AgioUnicode}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{tabularx}
+\usepackage[defblank]{paralist}
+\renewcommand\theadfont{\bfseries}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\graphicspath{{../fig/}}
+
+\usepackage{schemata}
+\usepackage{fancyvrb}
+
+\usepackage[russian]{datetime2}
+
+\begin{document}
+
+\title{Разработка и реализация грамматического модуля \\ Санкт"=Петербургского корпуса агиографических текстов}
+\author{%
+    Исполнитель: Сипунин Константин Владимирович \\
+    Научный руководитель: к.",ф.",н., доц.\ Алексеева Елена Леонидовна
+}
+\institute{%
+    Уровень образования: магистратура \\
+    Направление: 45.04.02 "<Лингвистика"> \\
+    Основная образовательная программа: ВМ.5626 \\ "<Прикладная и~экспериментальная лингвистика">
+}
+\date{\DTMdisplaydate{2020}{06}{16}{5}}
+
+\frame{\titlepage}
+
+\section{Введение}
+
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+    \frametitle{Санкт"=Петербургский корпус агиографических текстов}
+    \framesubtitle{СКАТ}
+    \begin{block}{Факты}
+        \begin{itemize}
+            \item материал~"--- списки житий древнерусских святых XV--XVII~вв.
+            \item объём~"--- порядка 50~текстов, 500~тыс.\ словоупотреблений
+            \item морфологически размеченных~"--- 5 (50~тыс.\ словоупотреблений)
+            \item тексты в форматах PDF и TEI XML
+        \end{itemize}
+    \end{block}
+
+    \begin{alertblock}{Проблемы}
+        \begin{itemize}
+            \item нет полной лемматизации (ранее были покрыты только имена)
+            \item морфологическая разметка ручная~"--- следовательно, медленная
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Цель и задачи работы}
+    \begin{block}{Цель}
+        теоретическая разработка и практическая реализация компонентов грамматического модуля корпуса СКАТ
+    \end{block}
+
+    \begin{block}{Задачи}
+        \begin{enumerate}
+            \item изучение проблем глагольного словоизменения в церковнославянском языке XV--XVII~вв.\ в рамках задачи лемматизации
+            \item программная реализация компонента для лемматизации глаголов, представленных на привлечённом материале
+            \item разработка программного компонента для прецедентной разметки текстов СКАТ, грамматической разметкой не обладающих
+        \end{enumerate}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Материал работы}
+    \centering
+    \begin{tabularx}{\textwidth}{XR{1.5cm}R{1.5cm}R{1.5cm}R{1.5cm}}
+        \toprule
+        \thead{Частеречный тег\footnote{
+            \texttt{гл}~"--- глагол, \texttt{прич}~"--- причастие, \texttt{/в}~"--- возвратность
+        }}
+        & \thead{ДП\footnote{
+            Житие Димитрия Прилуцкого
+        }}
+        & \thead{ДГ\footnote{
+            Житие Дионисия Глушицкого
+        }}
+        & \thead{КН\footnote{
+            Житие Кирилла Новоезерского
+        }}
+        & \thead{Сумма} \\ \midrule\midrule
+        \texttt{гл} & \num{396} & \num{1228} & \num{1352} & \num{2976} \\ \midrule
+        \texttt{гл/в} & \num{55} & \num{132} & \num{217} & \num{404} \\ \midrule
+        \texttt{прич} & \num{315} & \num{515} & \num{810} & \num{1640} \\ \midrule
+        \texttt{прич/в} & \num{31} & \num{51} & \num{109} & \num{191} \\ \midrule\midrule
+        Сумма & \num{797} & \num{1926} & \num{2488} & \num{5211} \\ \midrule
+        Общий объём & \num{5039} & \num{9649} & \num{15122} & \num{29810} \\ \bottomrule
+    \end{tabularx}
+\end{frame}
+
+\section{Лемматизация церковнославянских глаголов}
+
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}{Термины}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{block}{Нормализация}
+            идентификация графического инварианта
+        \end{block}
+        \column{0.5\textwidth}
+        \begin{block}{Лемматизация}
+            идентификация лексического инварианта
+        \end{block}
+    \end{columns}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{block}{}
+            \schema[close]{
+                \schemabox{
+                    \begin{minipage}{0.5\textwidth}
+                        \begin{itemize}
+                            \item {\agio бл҇ⷶженнаго}
+                            \item {\agio бл҃женⷩаго}
+                            \item {\agio бла҇ⷤнна҇ⷢ}
+                        \end{itemize}
+                    \end{minipage}
+                }
+            }{
+                \schemabox{
+                    \begin{minipage}{0.5\textwidth}
+                        \begin{center}
+                            {\agio блаженнаго}
+                        \end{center}
+                    \end{minipage}
+                }
+            }
+        \end{block}
+
+        \column{0.5\linewidth}
+        \begin{block}{}
+            \schema[close]{
+                \schemabox{
+                    \begin{minipage}{0.5\textwidth}
+                        \begin{itemize}
+                            \item {\agio блаженаго}
+                            \item {\agio блаженомꙋ}
+                            \item {\agio блаженныѧ}
+                        \end{itemize}
+                    \end{minipage}
+                }
+            }{
+                \schemabox{
+                    \begin{minipage}{0.5\textwidth}
+                        \begin{center}
+                            {\agio блаженныи}
+                        \end{center}
+                    \end{minipage}
+                }
+            }
+        \end{block}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Спецификация формата разметки}
+    \begin{center}
+        \includegraphics[width=0.9\linewidth]{spec}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Лемматизация}
+    \begin{columns}
+        \column{0.5\linewidth}
+        \begin{block}{Алгоритм}
+            \begin{enumerate}
+                \item нормализация
+                \item отсечение флексии и формативов
+                \item \alert{преобразование основы}
+                \item добавление словарной финали
+            \end{enumerate}
+        \end{block}
+
+        \column{0.5\linewidth}
+        \begin{block}{{\agio ѡбрѣтохомъ}}
+            \begin{itemize}
+                \item[] {\agio обрѣтохомъ}
+                \item[] {\agio обрѣт}
+                \item[] {\agio обрѣс}
+                \item[] {\agio обрѣсти}
+            \end{itemize}
+        \end{block}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Парадигмы}
+    \begin{columns}
+        \column{0.5\linewidth}
+        \begin{block}{Парадигма сигматического аориста}
+            \begin{Verbatim}[fontsize=\small]
+{
+  ("1", "ед"): "Х?[ЪЬ]",
+  ("2", "ед"): "[+Е]",
+  ("3", "ед"): "[+Е]",
+  ("1", "дв"): "Х?ОВ[+Е]",
+  ("2", "дв"): "С?Т[+АЕ]",
+  ("3", "дв"): "С?Т[+АЕ]",
+  ("1", "мн"): "Х?ОМ[ЪЬ]",
+  ("2", "мн"): "С?ТЕ",
+  ("3", "мн"): "Ш?[АЯ]",
+}
+            \end{Verbatim}
+        \end{block}
+
+        \column{0.5\linewidth}
+        \begin{block}{Парадигма эловых причастий}
+            \begin{Verbatim}[fontsize=\small]
+{
+  ("м", "ед"): "Л?[ЪЬ]",
+  ("м", "дв"): "Л?А",
+  ("м", "мн"): "Л?И",
+  ("ж", "ед"): "Л?А",
+  ("ж", "дв"): "Л?[+И]",
+  ("ж", "мн"): "Л?[ЫИ]",
+  ("ср", "ед"): "Л?О",
+  ("ср", "дв"): "Л?[+И]",
+  ("ср", "мн"): "Л?[АИ]",
+}
+            \end{Verbatim}
+        \end{block}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Формы церковнославянского глагола по типу ФОС}
+    \begin{columns}
+        \column{0.5\linewidth}
+        \begin{block}{От основы настоящего времени}
+            \begin{enumerate}
+                \item настоящее-будущее время
+                \item причастия настоящего времени
+                \item повелительное наклонение
+            \end{enumerate}
+        \end{block}
+
+        \column{0.5\linewidth}
+        \begin{block}{От основы инфинитива}
+            \begin{enumerate}
+                \item аорист
+                \item имперфект
+                \item причастия прошедшего времени
+                \item эловые причастия
+                \item \alert{инфинитив}
+                \item супин
+            \end{enumerate}
+        \end{block}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Сопоставление классификаций глаголов}
+    \framesubtitle{1--2~кл.}
+    \centering
+    \scriptsize
+    \begin{tabularx}{\textwidth}{P{1.5cm}P{1.25cm}P{2cm}X}
+        \toprule
+        \thead{Класс \\ (ц.-сл.)} & \thead{Класс \\ (рус.)} & \thead{Подкласс \\ (рус.)} & \thead{Примеры \\ (рус.)} \\ \midrule\midrule
+
+        & & 1/в & \textit{попрать}~"--- \textit{попрут}, \textit{рвать}~"--- \textit{рвут} \\ \cmidrule{3-4}
+        & V & 1/г & \textit{брать}~"--- \textit{берут}, \textit{звать}~"--- \textit{зовут} \\ \cmidrule{3-4}
+        & & 3 & \textit{реветь}~"--- \textit{ревут} \\ \cmidrule{2-4}
+        1 & VI & & \textit{беречь}~"--- \textit{берегут}, \textit{грести}~"--- \textit{гребут}, \textit{умереть}~"--- \textit{умрут} \\ \cmidrule{2-4}
+        & \multirow{2.5}{*}{VII} & 1 & \textit{блюcти}~"--- \textit{блюдут}, \textit{цвеcти}~"--- \textit{цветут} \\ \cmidrule{3-4}
+        & & 2 & \textit{жить}~"--- \textit{живут}, \textit{слыть}~"--- \textit{слывут} \\ \cmidrule{2-4}
+        & IX & & \textit{взять}~"--- \textit{возьмут}, \textit{начать}~"--- \textit{начнут} \\ \midrule
+
+        & III & & \textit{двинуть}~"--- \textit{двинут}, \textit{рухнуть}~"--- \textit{рухнут} \\ \cmidrule{2-4}
+        2 & IV & & \textit{разверзнуть}~"--- \textit{разверзнут}, \textit{вянуть}~"--- \textit{вянут} \\ \cmidrule{2-4}
+        & VII & 3 & \textit{деть}~"--- \textit{денут}, \textit{стать}~"--- \textit{станут} \\ \midrule
+    \end{tabularx}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Сопоставление классификаций глаголов}
+    \framesubtitle{3--4~кл.}
+    \centering
+    \scriptsize
+    \begin{tabularx}{\textwidth}{P{1.5cm}P{1.25cm}P{2cm}X}
+        \toprule
+        \thead{Класс \\ (ц.-сл.)} & \thead{Класс \\ (рус.)} & \thead{Подкласс \\ (рус.)} & \thead{Примеры \\ (рус.)} \\ \midrule\midrule
+
+        \multirow{9}{*}{3} & I & & \textit{вожделеть}~"--- \textit{вожделеют}, \textit{уповать}~"--- \textit{уповают} \\ \cmidrule{2-4}
+        & II & & \textit{даровать}~"--- \textit{даруют}, \textit{помиловать}~"--- \textit{помилуют} \\ \cmidrule{2-4}
+        & & 1/а & \textit{кликать}~"--- \textit{кличут}, \textit{прятать}~"--- \textit{прячут} \\ \cmidrule{3-4}
+        & V & 1/б & \textit{веять}~"--- \textit{веют}, \textit{надеяться}~"--- \textit{надеются} \\ \cmidrule{3-4}
+        & & 2 & \textit{бороться}~"--- \textit{борются}, \textit{пороть}~"--- \textit{порют} \\ \cmidrule{2-4}
+        & VIII & & \textit{давать}~"--- \textit{дают}, \textit{познавать}~"--- \textit{познают} \\ \midrule
+
+        4 & X & & \textit{любить}~"--- \textit{любят}, \textit{видеть}~"--- \textit{видят}, \textit{бояться}~"--- \textit{боятся} \\ \bottomrule
+    \end{tabularx}
+\end{frame}
+
+\begin{frame}{Несовпадение основ прошедшего времени и инфинитива}
+    \centering
+    \begin{tabularx}{0.9\textwidth}{P{1.5cm}X}
+        \toprule
+        \thead{Класс} & \thead{Примеры} \\ \midrule\midrule
+        IV & \textsc{навыкоша}~"--- \textsc{навыкнути}, \textsc{погрrзоша}~"--- \textsc{погрrзнути} \\ \midrule
+        VI/1 & \textsc{возмогоша}~"--- \textsc{возмощи}, \textsc{постригоша}~"--- \textsc{пострищи} \\ \midrule
+        VI/2/а & \textsc{wскребоша}~"--- \textsc{wскрести}, \textsc{погребоша}~"--- \textsc{погрести} \\ \midrule
+        VI/2/б & \textsc{прострошасr}~"--- \textsc{простретисr}, \textsc{uмроша}~"--- \textsc{uмрети} \\ \midrule
+        VII/1 & \textsc{wбрѣтоша}~"--- \textsc{wбрѣсти}, \textsc{падоша}~"--- \textsc{пасти} \\ \bottomrule
+    \end{tabularx}
+\end{frame}
+
+\begin{frame}{Оценка результатов}
+    \begin{exampleblock}{Показатели}
+        \begin{itemize}
+            \item полнота 100\%
+            \item точность \char`~99\%
+        \end{itemize}
+    \end{exampleblock}
+
+    \begin{alertblock}{Ошибки}
+        \begin{enumerate}
+            \item формы с дистактным расположением возвратного постфикса \begin{itemize}
+                \item \textsc{(на тебе сr) надѣемь} $\rightarrow$ \textsc{надѣяти}
+                \item \textsc{боrще (бо сr)} $\rightarrow$ \textsc{бояти}
+            \end{itemize}
+            \item формы с чередованиями, вызванными префиксальной деривацией \begin{itemize}
+                \item \textsc{изочтетъ} $\rightarrow$ \textsc{изочести}
+                \item \textsc{во(з)ми} $\rightarrow$ \textsc{возяти}
+            \end{itemize}
+            \item формы с неразрешённой графико"=орфографической неоднозначностью \begin{itemize}
+                \item \textsc{ликовствdюще} $\rightarrow$ \textsc{ликовствовати}
+                \item \textsc{ликоствuю(т)} $\rightarrow$ \textsc{ликоствовати}
+            \end{itemize}
+        \end{enumerate}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Работа с корпусом на платформе TXM}
+    \begin{center}
+        \includegraphics[width=\textwidth]{concordance}
+    \end{center}
+\end{frame}
+
+\section{Прецедентная разметка текстов СКАТ}
+
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}{Прецедентная разметка}
+    \begin{center}
+        \includegraphics[width=0.6\textwidth]{precedent}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Учёт потенциальной омонимии}
+    \begin{columns}
+        \column{0.5\linewidth}
+    \begin{Verbatim}[fontsize=\scriptsize]
+[
+  ["a", "род", "ед", "м"],
+  ["a", "им", "мн", "м"],
+  ["a", "вин", "мн", "м"],
+  ["a", "зв", "мн", "м"]
+],
+[
+  ["a", "дат", "ед", "м"],
+  ["a", "мест", "ед", "м"],
+  ["a", "им", "дв", "м"],
+  ["a", "вин", "дв", "м"],
+  ["a", "зв", "дв", "м"]
+],
+    \end{Verbatim}
+
+    \column{0.5\linewidth}
+    \begin{Verbatim}[fontsize=\scriptsize]
+[
+  ["личн", "возвр", "род", "ед"],
+  ["личн", "возвр", "вин", "ед"]
+],
+[
+  ["личн", "возвр", "дат", "ед"],
+  ["личн", "возвр", "мест", "ед"]
+],
+    \end{Verbatim}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Опыт по внедрению}
+    \begin{itemize}
+        \item проведён в рамках зимней сессии 2018/19~учебного года
+        \item омонимия ещё не учитывалась, что сказалось на длине фрагментов
+        \item в среднем \alert{524,7} словоформ на студента при номинальном объёме 350
+        \item качество работ возросло~"--- тексты стали проще для понимания \begin{itemize}
+            \item взаимная обусловленность граммем в синтетическом языке
+            \item согласование и координация граммем в словосочетаниях
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\end{document}

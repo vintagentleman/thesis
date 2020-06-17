@@ -1,0 +1,59 @@
+\ProvidesFile{spbu.rtx}
+
+\newcommand\specialist@the{\default@the}
+\specialist@the
+
+\def\stlabel{\CYRI\cyrs\cyrp\cyro\cyrl\cyrn\cyri\cyrt\cyre\cyrl\cyrsftsn}
+\def\st#1{\gdef\@st{#1}}\st{}
+\def\ststatus#1{\gdef\@ststatus{#1}}\ststatus{}
+
+\def\diplomafield#1{%
+  \csname #1label\endcsname:\\%
+  \csname @#1status\endcsname\ \csname @#1\endcsname
+}
+
+\if@titlepage\renewcommand\maketitle[1][]{
+\thispagestyle{empty}
+\enlargethispage{1.75cm}
+\vspace*{-2cm}
+
+\begin{center}
+  {\@institution}
+  \bfseries
+  \vskip 2cm
+  {\@st}
+  \vskip 0.5cm
+  {\@title}
+  \vskip 0.5cm
+  {\@topic}
+  \normalfont
+  \vskip 3cm
+  {\@course}
+\end{center}
+
+\vskip 2cm
+
+\begin{flushright}
+  \singlespacing
+  \ifx\@sa\empty\else
+  \diplomafield{sa}
+  \vskip 0.5cm
+  \fi
+  \ifx\@rev\empty\else
+  \diplomafield{rev}
+  \vskip 0.5cm
+  \fi
+\end{flushright}
+
+\vfill
+
+\begin{center}
+  \singlespacing
+  {\@city\\\@date}
+\end{center}
+
+\normalfont\clearpage
+}\fi
+\endinput
+%%
+%% End of file `specialist.rtx'.
